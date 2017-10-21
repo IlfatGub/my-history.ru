@@ -15,7 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>Please fill out the following fields to login:</p>
         <p>Please fill out the following fields to login:</p>
-            <p>Please fill out the following fields to login:</p>
             
 
     <div class="row">
