@@ -1,11 +1,13 @@
 <?php
 namespace backend\controllers;
 
+use app\models\RegForm;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use app\models\LoginForm;
+use app\models\User;
 
 /**
  * Site controller
@@ -22,11 +24,11 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'reg'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'reg'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -41,9 +43,6 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function actions()
     {
         return [
@@ -53,27 +52,16 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         return $this->render('index');
     }
 
-    /**
-     * Login action.
-     *
-     * @return string
-     */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
@@ -83,16 +71,35 @@ class SiteController extends Controller
             ]);
         }
     }
-
-    /**
-     * Logout action.
-     *
-     * @return string
-     */
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
+
+    public function actionReg()
+    {
+        $model = new RegForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()):
+            if ($user = $model->reg()):
+                if ($user->status === User::STATUS_ACTIVE):
+                    if (Yii::$app->getUser()->login($user)):
+                        return $this->goHome();
+                    endif;
+                else:
+                    Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
+                    Yii::error('Ошибка при регистрации');
+                    return $this->refresh();
+                endif;
+            endif;
+        endif;
+
+        return $this->render(
+            'reg',
+            [
+                'model' => $model
+            ]
+        );
+    }
+
 }
