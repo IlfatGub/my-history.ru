@@ -8,6 +8,8 @@
 namespace app\models;
 use yii\base\Model;
 use Yii;
+use common\models\User;
+
 class RegForm extends Model
 {
     public $username;

@@ -8,6 +8,7 @@
 namespace app\models;
 use yii\base\Model;
 use Yii;
+
 class LoginForm extends Model
 {
     public $username;
