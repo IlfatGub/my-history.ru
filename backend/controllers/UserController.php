@@ -54,7 +54,19 @@ class UserController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $string = '';
+        $query = User::find();
+        if(!empty(Yii::$app->request->post())){
+            $string = Yii::$app->request->post('string');
+            $query->where(['username' => $string]);
+        }
+
+        $model = $query->all();
+
+        return $this->render('index', [
+            'model' =>  $model,
+            'string' => $string,
+        ]);
     }
 
 }

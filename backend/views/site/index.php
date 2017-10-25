@@ -1,14 +1,3 @@
-<?php
-
-/* @var $this yii\web\View */
-
-$this->title = 'My Yii Application';
-
-?>
-
-<pre>
-    <?php print_r(Yii::$app->user->isGuest)    ?>
-</pre>
 <div class="site-index">
 
     <div class="jumbotron">
