@@ -9,6 +9,7 @@ namespace app\models;
 use yii\base\Model;
 use Yii;
 use Prophecy\Util;
+use common\models\User;
 class LoginForm extends Model
 {
     public $username;

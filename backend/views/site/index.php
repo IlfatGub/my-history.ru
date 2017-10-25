@@ -3,7 +3,12 @@
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
+
 ?>
+
+<pre>
+    <?php print_r(Yii::$app->user->isGuest)    ?>
+</pre>
 <div class="site-index">
 
     <div class="jumbotron">
@@ -46,6 +51,8 @@ $this->title = 'My Yii Application';
                     fugiat nulla pariatur.</p>
 
                 <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+
+
             </div>
         </div>
 

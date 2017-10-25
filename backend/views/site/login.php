@@ -10,6 +10,11 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<pre>
+    <?php print_r(Yii::$app->user->isGuest)    ?>
+</pre>
+
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 
