@@ -58,7 +58,7 @@ class UserController extends Controller
         $query = User::find();
         if(!empty(Yii::$app->request->post())){
             $string = Yii::$app->request->post('string');
-            $query->where(['username' => $string]);
+            $query->where(['like', 'username', $string]);
         }
 
         $model = $query->all();
