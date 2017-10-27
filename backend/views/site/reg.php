@@ -20,8 +20,6 @@ use yii\widgets\ActiveForm;
     </div>
     <?php ActiveForm::end(); ?>
 
-
-
     <?php if($model->scenario === 'emailActivation'): ?>
         <br><br><br>
         <i>*На указанный емайл будет отправлено письмо для активации аккаунта.</i>

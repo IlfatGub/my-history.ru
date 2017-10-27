@@ -9,8 +9,8 @@ echo 'Hello '.Html::encode($user->username).'.';
 echo Html::a("Для активации аккаунта перейдите по этой ссылке.",
     Yii::$app->urlManager->createAbsoluteUrl(
         [
-            '/user/activate-account',
-            'key' => $user->auth_key
+            '/site/activate-account',
+            'key' => $user->secret_key
         ]
     ));
 

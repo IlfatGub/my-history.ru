@@ -19,6 +19,7 @@ use yii\db\Expression;
  * @property string $password_reset_token
  * @property string $email
  * @property string $auth_key
+ * @property string $secret_key
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
@@ -79,6 +80,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['secret_key', 'unique']
         ];
     }
 
@@ -177,6 +179,11 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->auth_key;
     }
 
+    public function getSecretKey()
+    {
+        return $this->secret_key;
+    }
+
     /**
      * @inheritdoc
      */
@@ -234,5 +241,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function removeAuthKey()
     {
         $this->auth_key = null;
+    }
+
+    /* Хелперы */
+    public function generateSecretKey()
+    {
+        $this->secret_key = Yii::$app->security->generateRandomString().'_'.time();
+    }
+    public function removeSecretKey()
+    {
+        $this->secret_key = null;
     }
 }

@@ -17,6 +17,7 @@ class RegForm extends Model
     public $password;
     public $status;
     public $role;
+
     public function rules()
     {
         return [
@@ -24,7 +25,6 @@ class RegForm extends Model
             [['username', 'email', 'password'],'required'],
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['password', 'string', 'min' => 6, 'max' => 255],
-            ['role', 'integer', 'min' => 3, 'max' => 3],
             ['username', 'unique',
                 'targetClass' => User::className(),
                 'message' => 'Это имя уже занято.'],
@@ -40,6 +40,8 @@ class RegForm extends Model
             ['status', 'default', 'value' => User::STATUS_NOT_ACTIVE, 'on' => 'emailActivation'],
         ];
     }
+
+
     public function attributeLabels()
     {
         return [
@@ -53,11 +55,10 @@ class RegForm extends Model
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
-        $user->status = $this->status;
         $user->setPassword($this->password);
-//        $user->generateAuthKey();
+        $user->generateAuthKey();
         if($this->scenario === 'emailActivation')
-            $user->generateAuthKey();
+            $user->generateSecretKey();
         return $user->save() ? $user : null;
     }
 

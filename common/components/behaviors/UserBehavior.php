@@ -2,6 +2,7 @@
 namespace common\components\behaviors;
 
 use common\models\User;
+use Yii;
 use yii\db\ActiveRecord;
 
 class UserBehavior extends \yii\base\Behavior
@@ -52,7 +53,8 @@ class UserBehavior extends \yii\base\Behavior
      * EVENT_BEFORE_INSERT
      */
     public function beforeInsert(){
-        $this->owner->{$this->statusAttribute} = User::STATUS_ACTIVE;
+        $emailActivation = Yii::$app->params['emailActivation'];
+        $this->owner->{$this->statusAttribute} = $emailActivation ? User::STATUS_NOT_ACTIVE : User::STATUS_ACTIVE;
         $this->owner->{$this->roleAttribute} = User::USER_ROLE_DEFAULT;
     }
 }

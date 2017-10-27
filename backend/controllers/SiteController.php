@@ -30,7 +30,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'reg'],
+                        'actions' => ['login', 'error', 'reg', 'activate-account'],
                         'allow' => true,
                     ],
                     [
@@ -92,27 +92,34 @@ class SiteController extends Controller
         $emailActivation = Yii::$app->params['emailActivation'];
         $model = $emailActivation ? new RegForm(['scenario' => 'emailActivation']) : new RegForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()):
-            if ($user = $model->reg()):
-                if ($user->status === User::STATUS_ACTIVE):
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($user = $model->reg()) {
+                if ($user->status === User::STATUS_ACTIVE) {
                     if (Yii::$app->getUser()->login($user)):
                         return $this->goHome();
                     endif;
-                else:
-                    if ($model->sendActivationEmail($user)):
-                        Yii::$app->session->setFlash('success', 'Писмо отправлено на емайл <strong>' . Html::encode($user->email) . '</strong> (проверьте папку спам)');
-                    else:
+                } else {
+                    if ($model->sendActivationEmail($user)) {
+                        Yii::$app->session->setFlash('success', 'Писмо отправлено на емайл
+                            . <strong>' . Html::encode($user->email) . '</strong> (проверьте папку спам)
+                            . '.     Yii::$app->urlManager->createAbsoluteUrl(
+                                [
+                                    '/site/activate-account',
+                                    'key' => $user->secret_key
+                                ]
+                            ));
+                    } else {
                         Yii::$app->session->setFlash('error', 'Ошибка. Писмо не отправлено');
                         Yii::error('Ошибка отправки письма');
-                    endif;
+                    }
                     return $this->refresh();
-                endif;
-            else:
+                }
+            } else {
                 Yii::$app->session->setFlash('error', 'Возникла ошибка при регистрации.');
                 Yii::error('Ошибка при регистрации');
                 return $this->refresh();
-            endif;
-        endif;
+            }
+        }
 
         return $this->render(
             'reg',
@@ -141,3 +148,4 @@ class SiteController extends Controller
     }
 
 }
+

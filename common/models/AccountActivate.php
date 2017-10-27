@@ -16,9 +16,10 @@ class AccountActivate extends Model
 {
 
     private $_user;
+
     public function __construct($key, array $config = [])
     {
-        if(empty($key) || is_string($key))
+        if(empty($key))
             throw new InvalidParamException('Ключ не может быть пустым');
 
         $this->_user = User::findBySecretKey($key);
@@ -32,7 +33,7 @@ class AccountActivate extends Model
     public function activateAccount(){
         $user = $this->_user;
         $user->status = User::STATUS_ACTIVE;
-        $user->removeAuthKey();
+        $user->removeSecretKey();
         $user->save();
     }
 
