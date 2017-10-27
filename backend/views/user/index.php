@@ -29,7 +29,6 @@ JS;
     <?= Html::endForm() ?>
 
 </div>
-
 <table class="table table-bordered table-striped" id="userTable">
     <tr class="label-info">
         <td>Логин</td>
@@ -37,12 +36,13 @@ JS;
         <td>Status</td>
         <td>Role</td>
     </tr>
+
     <?php foreach ($model as $item) : ?>
         <tr>
             <td><?= $item->username ?></td>
             <td><?= $item->email ?></td>
-            <td><?= $item->status ?></td>
-            <td><?= $item->role ?></td>
+            <td><?= $item->getStatusName() ?></td>
+            <td><?= $item->getRoleName() ?></td>
         </tr>
     <?php endforeach ?>
 </table>
@@ -50,3 +50,7 @@ JS;
 <?php Pjax::end(); ?>
 
 
+Толстова Юлия Анатольевна
+Парамошина Марина Юрьевна
+Петрова Галина Федоровна
+Курчаева Елена Александровна

@@ -1,11 +1,14 @@
 <?php
+
 namespace common\models;
 
+use common\components\behaviors\UserBehavior;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\db\Expression;
 
 /**
  * User model
@@ -44,7 +47,17 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['block_at', 'created_at', 'updated_at'],
+                    ActiveRecord::EVENT_AFTER_UPDATE => ['updated_at'],
+                    'value' => new Expression('NOW()'),
+                ],
+            ],
+            'statusBehavior' =>  [
+                'class' => UserBehavior::className(),
+            ],
         ];
     }
 
@@ -57,6 +70,7 @@ class User extends ActiveRecord implements IdentityInterface
             'rememberMe' => 'Запомнить меня'
         ];
     }
+
     /**
      * @inheritdoc
      */
@@ -93,6 +107,12 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByUsername($username)
     {
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+    }
+
+
+    public static function findBySecretKey($key)
+    {
+        return static::findOne(['secret_key' => $key]);
     }
 
     /**
@@ -136,7 +156,7 @@ class User extends ActiveRecord implements IdentityInterface
             return false;
         }
 
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $timestamp = (int)substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
     }
@@ -194,6 +214,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
+
     /**
      * Generates new password reset token
      */
@@ -208,5 +229,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function removeAuthKey()
+    {
+        $this->auth_key = null;
     }
 }

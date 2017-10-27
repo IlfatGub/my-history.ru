@@ -6,6 +6,8 @@ use yii\widgets\ActiveForm;
 /* @var $form ActiveForm */
 ?>
 <div class="main-reg">
+    <div class="row col-lg-4 col-lg-offset-4">
+    <h2>Registration</h2>
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -14,16 +16,19 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'password')->passwordInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Регистрация', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Регистрация', ['class' => 'btn btn-primary col-xs-12']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 
-    <?php
-    if($model->scenario === 'emailActivation'):
-        ?>
+
+
+    <?php if($model->scenario === 'emailActivation'): ?>
+        <br><br><br>
         <i>*На указанный емайл будет отправлено письмо для активации аккаунта.</i>
         <?php
     endif;
     ?>
+    </div>
 
-</div><!-- main-reg -->
+</div>
+

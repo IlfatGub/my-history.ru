@@ -55,10 +55,9 @@ class RegForm extends Model
         $user->email = $this->email;
         $user->status = $this->status;
         $user->setPassword($this->password);
-        $user->generateAuthKey();
-        $user->role = User::USER_ROLE_DEFAULT;
+//        $user->generateAuthKey();
         if($this->scenario === 'emailActivation')
-            $user->generateSecretKey();
+            $user->generateAuthKey();
         return $user->save() ? $user : null;
     }
 
