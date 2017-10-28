@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use app\models\LoginForm;
 use common\models\User;
+use common\models\SendEmailForm;
 
 /**
  * Site controller
@@ -147,5 +148,17 @@ class SiteController extends Controller
         return $this->redirect(Url::to('/site/login'));
     }
 
+    public function actionSendEmail(){
+        $model = new SendEmailForm();
+        if($model->load(Yii::$app->request->post())){
+            if($model->validate()){
+                return;
+            }
+        }
+
+        return $this->render('sendEmail', [
+            'model' => $model
+        ]);
+    }
 }
 
