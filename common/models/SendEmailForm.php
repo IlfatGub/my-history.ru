@@ -9,7 +9,9 @@
 namespace common\models;
 
 
-class SendEmailForm
+use yii\base\Model;
+
+class SendEmailForm extends Model
 {
 
     public $email;
@@ -62,4 +64,5 @@ class SendEmailForm
 
         return false;
     }
+
 }

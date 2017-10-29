@@ -4,14 +4,6 @@ use yii\bootstrap\ActiveForm;
 ?>
 
 
-
-
-
-
-
-
-
-
 <div class="site-login">
     <div class="row col-lg-4 col-lg-offset-4">
         <h2>Please sign in</h2>
@@ -28,6 +20,8 @@ use yii\bootstrap\ActiveForm;
                     <?= Html::submitButton('Login', ['class' => 'btn btn-primary col-lg-12', 'name' => 'login-button']) ?>
                 </div>
             <?php ActiveForm::end(); ?>
+
+            <?= Html::a('Забыли пароль?', ['site/send-email']) ?>
         </div>
     </div>
 </div>

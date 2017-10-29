@@ -12,7 +12,7 @@ use common\models\User;
 /**
  * Site controller
  */
-class UserController extends Controller
+class UserController extends BehaviorController
 {
     /**
      * @inheritdoc
